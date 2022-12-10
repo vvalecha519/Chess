@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {Chess} from "chess.js";
 import { Chessboard } from "react-chessboard";
 import ReactDOM from 'react-dom';
@@ -14,6 +14,7 @@ export default function App() {
   const boxSize = 70
   const bound = {left: 0, top: 0, right:525, bottom: 525}
   const logger = (event) => console.log(event);
+  const [chess, setChess] = useState(new Chess())
   const handleStop = (e, data) => {
     console.log(data)
   }
@@ -25,6 +26,12 @@ export default function App() {
       return whitePieces[type]
     }
   }
+
+  useEffect(()=>{
+    chess.move('e4')
+    console.log(chess.ascii())
+  })
+  
   return <div className="container"><img src={chessboard} alt="chessboard" className="chessboard" />
 {
     firstRow.map(function (v, i) {
@@ -32,6 +39,7 @@ export default function App() {
       i={i}
       source={getPieceImage(i, v)}
       defaultPosition={{x: startingPosition.x+ boxSize* (i%8), y: startingPosition.x+ boxSize*Math.floor(i/8) }}
+      chess={chess}  
       >
     </Piece>
     })
@@ -42,6 +50,7 @@ export default function App() {
       i={i}
       source={getPieceImage(i+16, v)}
       defaultPosition={{x: startingPosition.x+ boxSize* (i%8), y: 515 - boxSize*Math.floor(i/8) }}
+      chess={chess}  
       >
     </Piece>
     })
