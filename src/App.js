@@ -15,6 +15,7 @@ export default function App() {
   const bound = {left: 0, top: 0, right:525, bottom: 525}
   const [chess, setChess] = useState(new Chess())
   const [modifiedPiece, setModifiedPiece] = useState(null)
+  const [promotionPiece, setPromotionPiece] = useState(null)
   const getPieceImage = (i, type) => {
     if ( i < 16) {
       return blackPieces[type]
@@ -30,11 +31,20 @@ export default function App() {
       alert("Check")
     }
     setModifiedPiece({color:color, location:location})
+    console.log(chess.ascii())
   }
 
-  useEffect(()=>{
- console.log(chess.ascii())
-  }, )
+  const promotionCallBack = (color, location) => {
+    let input = document.getElementById("input")
+    input.disabled = false
+        setPromotionPiece({color:color, location:location})
+  }
+
+  const handleChange = (event) => {
+    console.log(event.target.value)
+    let input = document.getElementById("input")
+    input.disabled = true
+  }
 
   return <div className="container"><img src={chessboard} alt="chessboard" className="chessboard" />
 {
@@ -61,9 +71,12 @@ export default function App() {
       mP={modifiedPiece}
       callBack={callBack}
       color={"white"}
+      promotionCallBack={promotionCallBack}
+      pP={promotionPiece}
       >
     </Piece>
     })
   }
+  <input type="text" id="input" placeholder="Enter letter of piece" disabled={true} onChange={handleChange} />
 </div>
 }

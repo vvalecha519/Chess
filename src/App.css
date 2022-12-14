@@ -1,23 +1,8 @@
-.container {
-  position: relative;
-  height: auto;
-}
 
-.chessboard {
-  position: absolute;
-  left: 0px;
-  top: 0px;
-}
 
 
 .piece {
   position: absolute;
   left: 0px;
   top: 0px;
-}
-
-.row-1 {
-  position: absolute;
-  left: 0px;
-  top: 0px; 
 }
