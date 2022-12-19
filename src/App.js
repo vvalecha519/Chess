@@ -1,10 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {Chess} from "chess.js";
-import { Chessboard } from "react-chessboard";
-import ReactDOM from 'react-dom';
-
 import { firstRow, blackPieces, whitePieces } from "./pieces";
-import Draggable from "react-draggable";
 import chessboard from "./assets/chessboard.png";
 import "./App.css";
 import Piece from "./Piece";
@@ -12,10 +8,10 @@ import Piece from "./Piece";
 export default function App() {
   const startingPosition = {x: 23, y: 23}
   const boxSize = 70
-  const bound = {left: 0, top: 0, right:525, bottom: 525}
   const [chess, setChess] = useState(new Chess())
   const [modifiedPiece, setModifiedPiece] = useState(null)
   const [promotionPiece, setPromotionPiece] = useState(null)
+  let currentPromotionPiece = {}
   const getPieceImage = (i, type) => {
     if ( i < 16) {
       return blackPieces[type]
@@ -31,18 +27,19 @@ export default function App() {
       alert("Check")
     }
     setModifiedPiece({color:color, location:location})
-    console.log(chess.ascii())
   }
 
   const promotionCallBack = (color, location) => {
+    console.log("promotion")
     let input = document.getElementById("input")
     input.disabled = false
-        setPromotionPiece({color:color, location:location})
+    currentPromotionPiece = {color:color, location:location}
   }
 
   const handleChange = (event) => {
-    console.log(event.target.value)
     let input = document.getElementById("input")
+    setPromotionPiece({color:currentPromotionPiece.color, location:currentPromotionPiece.location, type:event.target.value})
+    input.value = ""
     input.disabled = true
   }
 
@@ -57,6 +54,9 @@ export default function App() {
       mP={modifiedPiece}
       callBack={callBack}
       color={"black"}
+      promotionCallBack={promotionCallBack}
+      pP={promotionPiece}
+      pieceType={v}
       >
     </Piece>
     })
@@ -73,10 +73,12 @@ export default function App() {
       color={"white"}
       promotionCallBack={promotionCallBack}
       pP={promotionPiece}
+      pieceType={v}
       >
     </Piece>
     })
   }
   <input type="text" id="input" placeholder="Enter letter of piece" disabled={true} onChange={handleChange} />
+  <button onClick={() => console.log(chess.ascii())}>View Chess Model</button>
 </div>
 }
