@@ -12,6 +12,7 @@ export default function Piece({i, source, defaultPosition, chess, modifiedPiece,
   const bound = { left: 0, top: 0, right: 525, bottom: 525 };
 
   const handleStop = (event, dragElement) => {
+    document.getElementById(`piece-${i}-${color}`).style.zIndex = 1;
     let newX = Math.floor(dragElement.x / 70) * boxSize + startingPosition.x;
     let newY = Math.floor(dragElement.y / 70) * boxSize + startingPosition.y;
     let oldPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
@@ -47,7 +48,7 @@ export default function Piece({i, source, defaultPosition, chess, modifiedPiece,
   };
 
   const handleStart = (event, dragElement) => {
-    document.getElementById(`drag-con-${i}-${color}`).style.zIndex = 1000;
+    document.getElementById(`piece-${i}-${color}`).style.zIndex = 1000;
   };
 
   useEffect(() => {
