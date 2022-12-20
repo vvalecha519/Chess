@@ -24,6 +24,7 @@ export default function Piece({ i, source, defaultPosition, chess, mP, callBack,
     setX(newX)
     setY(newY)
     setOldPiece(oldPoint)
+    callBack(color, newPoint)
     chess.undo()
     promotionCallBack(color, newPoint)
   } else {

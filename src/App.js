@@ -11,7 +11,7 @@ export default function App() {
   const [chess, setChess] = useState(new Chess())
   const [modifiedPiece, setModifiedPiece] = useState(null)
   const [promotionPiece, setPromotionPiece] = useState(null)
-  let currentPromotionPiece = {}
+  const [currentPromotionPiece, setCurrentPromotionPiece] = useState(null)
   const getPieceImage = (i, type) => {
     if ( i < 16) {
       return blackPieces[type]
@@ -33,7 +33,12 @@ export default function App() {
     console.log("promotion")
     let input = document.getElementById("input")
     input.disabled = false
-    currentPromotionPiece = {color:color, location:location}
+    console.log(location)
+   setCurrentPromotionPiece({color:color, location:location})
+  }
+
+  const resetCurrentPromotionPiece = () => {
+    
   }
 
   const handleChange = (event) => {
