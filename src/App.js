@@ -61,11 +61,11 @@ export default function App() {
               y: startingPosition.x + boxSize * Math.floor(i / 8)
             }}
             chess={chess}
-            mP={modifiedPiece}
+            modifiedPiece={modifiedPiece}
             callBack={callBack}
             color={"black"}
             promotionCallBack={promotionCallBack}
-            pP={promotionPiece}
+            promotionPiece={promotionPiece}
             pieceType={v}
           ></Piece>
         );
@@ -80,11 +80,11 @@ export default function App() {
               y: 515 - boxSize * Math.floor(i / 8)
             }}
             chess={chess}
-            mP={modifiedPiece}
+            modifiedPiece={modifiedPiece}
             callBack={callBack}
             color={"white"}
             promotionCallBack={promotionCallBack}
-            pP={promotionPiece}
+            promotionPiece={promotionPiece}
             pieceType={v}
           ></Piece>
         );

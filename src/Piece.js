@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { blackPieces, whitePieces } from "./pieces";
 
-export default function Piece({i, source, defaultPosition, chess, mP, callBack, color, promotionCallBack, pP, pieceType}) {
+export default function Piece({i, source, defaultPosition, chess, modifiedPiece, callBack, color, promotionCallBack, promotionPiece, pieceType}) {
   const [x, setX] = useState(defaultPosition.x);
   const [y, setY] = useState(defaultPosition.y);
   const [pieType, setPieceType] = useState(pieceType);
-  const [oldPie, setOldPiece] = useState("");
+  const [oldPiece, setOldPiece] = useState("");
   const startingPosition = { x: 23, y: 23 };
   const boxSize = 70;
   const bound = { left: 0, top: 0, right: 525, bottom: 525 };
@@ -14,13 +14,8 @@ export default function Piece({i, source, defaultPosition, chess, mP, callBack, 
   const handleStop = (event, dragElement) => {
     let newX = Math.floor(dragElement.x / 70) * boxSize + startingPosition.x;
     let newY = Math.floor(dragElement.y / 70) * boxSize + startingPosition.y;
-    let oldPoint =
-      String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) +
-      String(8 - Math.floor(y / 70));
-    let newPoint =
-      String.fromCharCode("a".charCodeAt(0) + Math.floor(dragElement.x / 70)) +
-      String(8 - Math.floor(dragElement.y / 70));
-
+    let oldPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
+    let newPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(dragElement.x / 70)) + String(8 - Math.floor(dragElement.y / 70));
     if (
       (newPoint[1] === "8" && pieType === "p" && color === "white") ||
       (newPoint[1] === "1" && pieType === "p" && color === "black")
@@ -56,20 +51,20 @@ export default function Piece({i, source, defaultPosition, chess, mP, callBack, 
   };
 
   useEffect(() => {
-    let oldPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
-    if (mP != null && color !== mP.color && oldPoint === mP.location) {
+    let currentPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
+    if (modifiedPiece != null && color !== modifiedPiece.color && currentPoint === modifiedPiece.location) {
       //hide piece
       document.getElementById(`drag-con-${i}-${color}`).style.display = "none";
     }
-    if (pP != null && color == pP.color && oldPoint == pP.location) {
+    if (promotionPiece != null && color == promotionPiece.color && currentPoint == promotionPiece.location) {
       //hide piece
-      chess.move({ from: oldPie, to: oldPoint, promotion: pP.type });
+      chess.move({ from: oldPiece, to: currentPoint, promotion: promotionPiece.type });
       if (color == "white")
         document.getElementById(`piece-${i}-${color}`).src =
-          whitePieces[pP.type];
+          whitePieces[promotionPiece.type];
       else
-        document.getElementById(`piece-${i}-${color}`).src = blackPieces[pP.type];
-      setPieceType(pP.type);
+        document.getElementById(`piece-${i}-${color}`).src = blackPieces[promotionPiece.type];
+      setPieceType(promotionPiece.type);
     }
   });
 
