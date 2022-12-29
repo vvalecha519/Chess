@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Draggable from "react-draggable";
 import { blackPieces, whitePieces } from "./pieces";
 
-export default function Piece({i, source, defaultPosition, chess, modifiedPiece, callBack, color, promotionCallBack, promotionPiece, pieceType}) {
+export default function Piece({i, source, defaultPosition, chess, modifiedPiece, castlingPiece, callBack, castlingCallBack, color, promotionCallBack, promotionPiece, pieceType}) {
   const [x, setX] = useState(defaultPosition.x);
   const [y, setY] = useState(defaultPosition.y);
   const [pieType, setPieceType] = useState(pieceType);
@@ -39,6 +39,29 @@ export default function Piece({i, source, defaultPosition, chess, modifiedPiece,
       if (chess.move({ from: oldPoint, to: newPoint }) !== null) {
         setX(newX);
         setY(newY);
+        //check for castling
+        let history = chess.history({ verbose: true }).at(-1).flags
+        console.log("history", history)
+        if ( history === "k" || history === "q" ) {
+          console.log("castlingMove")
+          let rookNewPoint = ""
+          let rookOldPoint = ""
+          if ( history === "k" ) {
+            rookOldPoint+="h"
+            rookNewPoint+="f"
+          } else {
+            rookOldPoint+="a"
+            rookNewPoint+="d"
+          }
+          if ( color == "black") {
+            rookOldPoint+="8"
+            rookNewPoint+="8"
+          } else {
+            rookOldPoint+="1"
+            rookNewPoint+="1"
+          }
+          castlingCallBack(rookOldPoint, rookNewPoint, color)
+        }
         callBack(color, newPoint);
       } else {
         setX(x);
@@ -53,15 +76,16 @@ export default function Piece({i, source, defaultPosition, chess, modifiedPiece,
 
   useEffect(() => {
 
-    //update rook position
-    if(i === 0) {
-      console.log("rook")
-      let x = chess.history({ verbose: true })
-      if ( x.length > 0 ) console.log(x.at(-1).flags)
-    }
-
 
     let currentPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
+    if ( castlingPiece !== null)console.log(castlingPiece.currentLoc)
+    else console.log("null")
+    console.log(currentPoint)
+    if (castlingPiece != null && color === castlingPiece.color && currentPoint === castlingPiece.currentLoc) {
+      console.log("move rook")
+      console.log('x' , (castlingPiece.newLoc[0].charCodeAt(0)- 'a'.charCodeAt(0)) * 70)
+      setX(startingPosition.x+ (castlingPiece.newLoc[0].charCodeAt(0)- 'a'.charCodeAt(0)) * 70)
+    }
     if (modifiedPiece != null && color !== modifiedPiece.color && currentPoint === modifiedPiece.location) {
       //hide piece
       document.getElementById(`drag-con-${i}-${color}`).style.display = "none";

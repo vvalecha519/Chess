@@ -10,6 +10,7 @@ export default function App() {
   const boxSize = 70;
   const [chess, setChess] = useState(new Chess());
   const [modifiedPiece, setModifiedPiece] = useState(null);
+  const [castlingPiece, setCastlingPiece] = useState(null);
   const [promotionPiece, setPromotionPiece] = useState(null);
   const [currentPromotionPiece, setCurrentPromotionPiece] = useState(null);
   const getPieceImage = (i, type) => {
@@ -18,6 +19,12 @@ export default function App() {
     } else {
       return whitePieces[type];
     }
+  };
+
+  const castlingCallBack = (oldLoc, newLoc, color) => {
+    console.log("castling")
+    console.log(oldLoc, newLoc, color)
+    setCastlingPiece({ currentLoc: oldLoc, newLoc: newLoc, color: color});
   };
 
   const callBack = (color, location) => {
@@ -62,7 +69,9 @@ export default function App() {
             }}
             chess={chess}
             modifiedPiece={modifiedPiece}
+            castlingPiece={castlingPiece}
             callBack={callBack}
+            castlingCallBack={castlingCallBack}
             color={"black"}
             promotionCallBack={promotionCallBack}
             promotionPiece={promotionPiece}
@@ -81,7 +90,9 @@ export default function App() {
             }}
             chess={chess}
             modifiedPiece={modifiedPiece}
+            castlingPiece={castlingPiece}
             callBack={callBack}
+            castlingCallBack={castlingCallBack}
             color={"white"}
             promotionCallBack={promotionCallBack}
             promotionPiece={promotionPiece}
