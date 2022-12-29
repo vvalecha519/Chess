@@ -96,7 +96,8 @@ export default function App() {
         disabled={true}
         onChange={handleChange}
       />
-      <button onClick={() => console.log(chess.ascii())}>
+      <button onClick={() => console.log(chess.ascii())
+      }>
         View Chess Model
       </button>
     </div>

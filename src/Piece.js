@@ -52,6 +52,15 @@ export default function Piece({i, source, defaultPosition, chess, modifiedPiece,
   };
 
   useEffect(() => {
+
+    //update rook position
+    if(i === 0) {
+      console.log("rook")
+      let x = chess.history({ verbose: true })
+      if ( x.length > 0 ) console.log(x.at(-1).flags)
+    }
+
+
     let currentPoint = String.fromCharCode("a".charCodeAt(0) + Math.floor(x / 70)) + String(8 - Math.floor(y / 70));
     if (modifiedPiece != null && color !== modifiedPiece.color && currentPoint === modifiedPiece.location) {
       //hide piece
